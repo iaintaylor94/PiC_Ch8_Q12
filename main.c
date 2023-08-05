@@ -1,61 +1,66 @@
-// This program is to transpose the elements of an array
+// This program is to transpose the elements of a variable sized array
 
 #include <stdio.h>
 
 // Declare Functions
-void transposeMatrix (int[4][5], int[5][4]);
+void getDimensions(int*, int*);
+void getMatrix (size_t width, size_t height, int[width][height]);
+void transposeMatrix (size_t width, size_t height, int[width][height], int[height][width]);
+void printMatrix (size_t width, size_t height, int[width][height]);
 
 int main(void) {
 
   // Get input
-  int inMatrix[4][5];
-  printf ("Enter array elements - array is 4x5\n");
+  int width, height;
+  getDimensions(&width, &height);
   
-  printf ("Line 1:  ");
-  for (int i = 0; i < 4; i++)
-    scanf ("%d", &inMatrix[i][0]);
-
-  printf ("Line 2:  ");
-  for (int i = 0; i < 4; i++)
-    scanf ("%d", &inMatrix[i][1]); 
-
-  printf ("Line 3:  ");
-  for (int i = 0; i < 4; i++)
-    scanf ("%d", &inMatrix[i][2]);
-
-  printf ("Line 4:  ");
-  for (int i = 0; i < 4; i++)
-    scanf ("%d", &inMatrix[i][3]);
-
-  printf ("Line 5:  ");
-  for (int i = 0; i < 4; i++)
-    scanf ("%d", &inMatrix[i][4]);
-
-  printf ("\n");
+  int inMatrix[width][height];
+  getMatrix (width, height, inMatrix);
 
   // Transpose matrix
-  int outMatrix[5][4];
-  transposeMatrix(inMatrix, outMatrix);
+  int outMatrix[height][width];
+  transposeMatrix(width, height, inMatrix, outMatrix);
 
   // Print outMatrix
-  printf ("Output transposed matrix\n");
-  for (int i = 0; i < 4; i++) {
-    printf ("Line %d: ", i + 1);
-    for (int j = 0; j < 5; j++) {
-      printf ("%d", outMatrix[j][i]); // Print line
-    }
-    printf ("\n"); // Next Line
-  }
+  printMatrix (height, width, outMatrix);
   
   return 0;
 }
 
 // Define Functions
-void transposeMatrix (int input[4][5], int output[5][4]) {
+void getDimensions (int *width, int *height) {
+  printf ("Enter width and height: ");
+  scanf ("%d %d", width, height);
+}
 
-  for (int i = 0; i < 4; i++) {
-    for (int j = 0; j < 5; j++) {
+void getMatrix(size_t width, size_t height, int inMatrix[width][height]) {
+
+  for (int i = 0; i < height; i++) {
+    printf ("Line %d: ",i);
+    for (int j = 0; j < width; j++) {
+      scanf ("%d", &inMatrix[j][i]);
+    }
+  }
+
+  printf ("\n");
+}
+
+void transposeMatrix (size_t width, size_t height, int input[width][height], int output[height][width]) {
+
+  for (int i = 0; i < width; i++) {
+    for (int j = 0; j < height; j++) {
       output[j][i] = input[i][j];
     }
+  }
+}
+
+void printMatrix (size_t width, size_t height, int matrix[width][height]) {
+  printf ("Output transposed matrix\n");
+  for (int i = 0; i < height; i++) { // Loop lines
+    printf ("Line %d: ", i);
+    for (int j = 0; j < width; j++) {
+      printf ("%d", matrix[j][i]); // Print line
+    }
+    printf ("\n"); // Next Line
   }
 }
